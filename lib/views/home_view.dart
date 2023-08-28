@@ -2,7 +2,7 @@ import 'package:diary/helper/constants.dart';
 import 'package:diary/model/dairy_details_model.dart';
 import 'package:diary/views/dairy_view.dart';
 import 'package:diary/views/details.dart';
-import 'package:diary/views/widgets/drawer.dart';
+import 'package:diary/widget/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:diary/controllers/diary_controller.dart';
@@ -15,7 +15,9 @@ class HomeView extends GetView {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: CustomDrawer(height: Get.height),
+      drawer: CustomDrawer(
+        height: Get.height,
+      ),
       appBar: AppBar(
         backgroundColor: green,
         leading: StreamBuilder(
