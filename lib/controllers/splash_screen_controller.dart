@@ -4,7 +4,7 @@ import 'package:diary/views/login_view.dart';
 import 'package:get/get.dart';
 
 class SplashScreenController extends GetxController {
-  final user = firebaseAuth.currentUser.obs;
+  final user = firebaseAuth.currentUser?.obs;
   @override
   void onReady() {
     super.onReady();
