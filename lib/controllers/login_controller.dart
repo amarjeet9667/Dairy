@@ -5,10 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginController extends GetxController {
   RxBool isLogIn = false.obs;
   final signIn = GoogleSignIn.standard();
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
   signInWithGoogle() async {
     Get.dialog(
       const AlertDialog(
@@ -42,7 +45,7 @@ class LoginController extends GetxController {
             photo: account.photoUrl!,
             login: DateTime.now().toUtc.toString());
 
-        isLogIn.value = true;
+        saveUserLogInStatus();
       }
     } on FirebaseException catch (e) {
       Get.snackbar('Error', '${e.message}');
@@ -72,8 +75,31 @@ class LoginController extends GetxController {
     }
   }
 
+  checkUserLogInStatus() async {
+    SharedPreferences prefs = await _prefs;
+    return prefs.getBool('isLoggedIn') ?? false;
+  }
+
+  saveUserLogInStatus() async {
+    SharedPreferences prefs = await _prefs;
+    prefs.setBool('isLoggedIn', true);
+  }
+
+  removeLogInStatus() async {
+    SharedPreferences prefs = await _prefs;
+    prefs.remove('isLoggedIn');
+  }
+
+  checkUserLogIn() async {
+    bool isLoggedIn = await checkUserLogInStatus();
+    if (isLoggedIn) {
+      Get.offAll(HomeView());
+    }
+  }
+
   userLogout() async {
     await firebaseAuth.signOut();
+    removeLogInStatus();
     isLogIn.value = false;
   }
 }
