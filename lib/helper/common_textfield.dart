@@ -9,6 +9,7 @@ class CommonTextField extends StatelessWidget {
   final FontWeight? textWeight;
   final FontWeight fontWeight;
   final int? maxLines;
+  final bool? showCursor;
   const CommonTextField({
     super.key,
     this.controller,
@@ -18,17 +19,18 @@ class CommonTextField extends StatelessWidget {
     this.maxLines,
     required this.textSize,
     this.textWeight,
+    this.showCursor,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      showCursor: showCursor,
       maxLines: maxLines,
       textAlign: TextAlign.start,
       style:
           TextStyle(color: black, fontSize: textSize, fontWeight: textWeight),
       controller: controller,
-      textCapitalization: TextCapitalization.words,
       decoration: InputDecoration(
         border: InputBorder.none,
         hintText: hintText,

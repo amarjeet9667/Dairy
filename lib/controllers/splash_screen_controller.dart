@@ -13,6 +13,6 @@ class SplashScreenController extends GetxController {
 
   splashControl() async {
     await Future.delayed(const Duration(seconds: 5));
-    user != null ? Get.offAll(HomeView()) : Get.offAll(const LoginView());
+    user != null ? Get.offAll(const HomeView()) : Get.offAll(const LoginView());
   }
 }

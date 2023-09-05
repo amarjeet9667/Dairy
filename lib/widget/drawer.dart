@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diary/helper/constants.dart';
 import 'package:diary/views/login_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CustomDrawer extends StatefulWidget {
   const CustomDrawer({
@@ -19,7 +23,13 @@ class CustomDrawer extends StatefulWidget {
 
 class _CustomDrawerState extends State<CustomDrawer> {
   bool isLogOut = false;
-  String? profileImage;
+  bool isUploading = false;
+
+  setuploadState(bool uploading) {
+    setState(() {
+      isUploading = uploading;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,15 +85,19 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       ),
                       const SizedBox(width: 50),
                       InkWell(
-                        onTap: () {},
-                        child: CircleAvatar(
-                          radius: 30,
-                          backgroundColor: white,
-                          backgroundImage: user != null
-                              ? NetworkImage(user.get('photo') ?? '')
-                                  as ImageProvider
-                              : const AssetImage('assets/user.png'),
-                        ),
+                        onTap: () {
+                          pickedImage(setuploadState);
+                        },
+                        child: isUploading
+                            ? const Center(child: CircularProgressIndicator())
+                            : CircleAvatar(
+                                radius: 30,
+                                backgroundColor: white,
+                                backgroundImage: user != null
+                                    ? NetworkImage(user.get('photo') ?? '')
+                                        as ImageProvider
+                                    : const AssetImage('assets/user.png'),
+                              ),
                       ),
                     ],
                   ),
@@ -121,4 +135,40 @@ class _CustomDrawerState extends State<CustomDrawer> {
   void loginPage() {
     Get.offAll(const LoginView());
   }
+}
+
+updateToFirebase(XFile imageUrl) async {
+  try {
+    final uid = firebaseAuth.currentUser!.uid;
+    final storageRef = firebaseStorage.ref();
+    final newStorageref = storageRef.child('photo/$uid.jpg');
+    final uploadTask = newStorageref.putFile(File(imageUrl.path));
+    final snapshot = await uploadTask;
+
+    if (snapshot.state == TaskState.success) {
+      final downloadUrl = await newStorageref.getDownloadURL();
+
+      await firestore
+          .collection('Users')
+          .doc(uid)
+          .update({'photo': downloadUrl});
+    }
+  } on FirebaseAuthException catch (e) {
+    Get.snackbar('Error', e.toString());
+  }
+}
+
+Future<void> pickedImage(Function(bool) setuploadState) async {
+  try {
+    setuploadState(true);
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      await updateToFirebase(pickedImage);
+    }
+    setuploadState(false);
+  } catch (e) {
+    Get.snackbar('Error', e.toString());
+  }
+  return;
 }

@@ -68,10 +68,10 @@ class LoginController extends GetxController {
         'photo': photo,
         'login': FieldValue.serverTimestamp(),
       }).then((_) {
-        Get.offAll(HomeView());
+        Get.offAll(const HomeView());
       });
     } else {
-      Get.offAll(HomeView());
+      Get.offAll(const HomeView());
     }
   }
 
@@ -93,7 +93,7 @@ class LoginController extends GetxController {
   checkUserLogIn() async {
     bool isLoggedIn = await checkUserLogInStatus();
     if (isLoggedIn) {
-      Get.offAll(HomeView());
+      Get.offAll(const HomeView());
     }
   }
 

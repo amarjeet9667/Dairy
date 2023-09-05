@@ -43,6 +43,7 @@ class DiaryController extends GetxController {
 
   deleteEntry(String id) async {
     final uid = firebaseAuth.currentUser!.uid;
+
     await firestore
         .collection('Users')
         .doc(uid)
@@ -68,10 +69,10 @@ class DiaryController extends GetxController {
         'body': body,
         'timestamp': timestamp,
       }).then((value) {
-        Get.offAll(HomeView());
+        Get.offAll(const HomeView());
       });
     } else {
-      Get.offAll(HomeView());
+      Get.offAll(const HomeView());
     }
   }
 
