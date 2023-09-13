@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diary/helper/constants.dart';
 import 'package:diary/views/home_view.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -59,6 +60,7 @@ class LoginController extends GetxController {
     required String login,
   }) async {
     final uid = firebaseAuth.currentUser!.uid;
+    String? fcmToken = await FirebaseMessaging.instance.getToken();
     final firebaseFirestore =
         await firestore.collection("Users").where('uid', isEqualTo: uid).get();
     if (firebaseFirestore.docs.isEmpty) {
@@ -67,6 +69,7 @@ class LoginController extends GetxController {
         'email': email,
         'photo': photo,
         'login': FieldValue.serverTimestamp(),
+        'fcmToken': fcmToken,
       }).then((_) {
         Get.offAll(const HomeView());
       });

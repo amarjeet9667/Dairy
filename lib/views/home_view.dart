@@ -1,8 +1,12 @@
+import 'dart:developer';
+
+import 'package:badges/badges.dart' as Badges;
+import 'package:diary/controllers/notification_controller.dart';
 import 'package:diary/helper/constants.dart';
 import 'package:diary/model/dairy_details_model.dart';
 import 'package:diary/views/dairy_view.dart';
 import 'package:diary/views/details.dart';
-import 'package:diary/views/notification.dart';
+import 'package:diary/views/notification_view.dart';
 import 'package:diary/widget/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,6 +21,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final DiaryController _diaryController = Get.put(DiaryController());
+  final NotificationController controller = Get.put(NotificationController());
 
   @override
   Widget build(BuildContext context) {
@@ -67,15 +72,21 @@ class _HomeViewState extends State<HomeView> {
         ),
         centerTitle: true,
         actions: [
-          IconButton(
-            onPressed: () {
-              Get.to(
-                const ProductPage(message: ''),
-              );
-            },
-            icon: const Icon(
-              Icons.notifications,
-              color: white,
+          Badges.Badge(
+            position: Badges.BadgePosition.topEnd(top: 0, end: 3),
+            badgeContent: Obx(() => Text(
+                  '${controller.notificationCount.value}',
+                  style: const TextStyle(color: Colors.white),
+                )),
+            child: IconButton(
+              icon: const Icon(
+                Icons.notifications,
+                color: white,
+              ),
+              onPressed: () {
+                Get.to(const NotificationView(message: ''));
+                log('InitialValue:-${controller.notificationCount.value}');
+              },
             ),
           ),
         ],
