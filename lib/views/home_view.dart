@@ -6,6 +6,7 @@ import 'package:diary/helper/constants.dart';
 import 'package:diary/model/dairy_details_model.dart';
 import 'package:diary/views/dairy_view.dart';
 import 'package:diary/views/details.dart';
+import 'package:diary/views/notification_list_view.dart';
 import 'package:diary/views/notification_view.dart';
 import 'package:diary/widget/drawer.dart';
 import 'package:flutter/material.dart';
@@ -74,17 +75,20 @@ class _HomeViewState extends State<HomeView> {
         actions: [
           Badges.Badge(
             position: Badges.BadgePosition.topEnd(top: 0, end: 3),
-            badgeContent: Obx(() => Text(
-                  '${controller.notificationCount.value}',
-                  style: const TextStyle(color: Colors.white),
-                )),
+            badgeContent: Obx(
+              () => Text(
+                '${controller.notificationCount.value}',
+                style: const TextStyle(color: Colors.white),
+              ),
+            ),
             child: IconButton(
               icon: const Icon(
                 Icons.notifications,
                 color: white,
               ),
               onPressed: () {
-                Get.to(const NotificationView(message: ''));
+                Get.to(const NotificationListView());
+                // Get.to(const NotificationView(message: ''));
                 log('InitialValue:-${controller.notificationCount.value}');
               },
             ),

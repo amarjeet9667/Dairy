@@ -1,4 +1,5 @@
 import 'package:diary/helper/local_notification.dart';
+import 'package:diary/model/recieve_notification.dart';
 import 'package:diary/views/notification_view.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
@@ -10,6 +11,8 @@ class NotificationController extends GetxController {
   var type = "".obs;
   RxBool isPushNotification = false.obs;
   RxInt notificationCount = 0.obs;
+  RxList<ReceivedNotification> recievedNotification =
+      <ReceivedNotification>[].obs;
 
   @override
   void onInit() {
@@ -25,7 +28,15 @@ class NotificationController extends GetxController {
         type.value = "I am coming from terminated state";
         isPushNotification.value = true;
         incrementNotificationCount(); // Increment notification count
-        Get.to(NotificationView(message: body.value));
+
+        final newNotification = ReceivedNotification(
+          title: "${event.notification!.title}",
+          body: "${event.notification!.body}",
+          timestamp: DateTime.now().toString(),
+        );
+        recievedNotification.add(newNotification);
+
+        Get.to(NotificationView(message: body.value, notification: newNotification,));
       }
     });
 
@@ -37,6 +48,13 @@ class NotificationController extends GetxController {
       type.value = "I am coming from foreground state";
       isPushNotification.value = true;
       incrementNotificationCount(); // Increment notification count
+
+      final newNotification = ReceivedNotification(
+        title: "${event.notification!.title}",
+        body: "${event.notification!.body}",
+        timestamp: DateTime.now().toString(),
+      );
+      recievedNotification.add(newNotification);
     });
 
     // Background State
@@ -46,7 +64,15 @@ class NotificationController extends GetxController {
       type.value = "I am coming from background state";
       isPushNotification.value = true;
       incrementNotificationCount(); // Increment notification count
-      Get.to(NotificationView(message: body.value));
+
+      final newNotification = ReceivedNotification(
+        title: "${event.notification!.title}",
+        body: "${event.notification!.body}",
+        timestamp: DateTime.now().toString(),
+      );
+      recievedNotification.add(newNotification);
+
+       Get.to(NotificationView(message: body.value, notification: newNotification,));
     });
   }
 

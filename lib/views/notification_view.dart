@@ -1,12 +1,16 @@
 import 'package:diary/controllers/notification_controller.dart';
 import 'package:diary/helper/constants.dart';
+import 'package:diary/model/recieve_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class NotificationView extends StatefulWidget {
   final String? message;
+  final ReceivedNotification notification;
 
-  const NotificationView({Key? key, required this.message}) : super(key: key);
+  const NotificationView(
+      {Key? key, required this.message, required this.notification})
+      : super(key: key);
 
   @override
   NotificationViewState createState() => NotificationViewState();
@@ -18,7 +22,7 @@ class NotificationViewState extends State<NotificationView> {
   @override
   void dispose() {
     controller.decrementNotificationCount();
-    controller.clearData();
+    // controller.clearData();
     super.dispose();
   }
 
