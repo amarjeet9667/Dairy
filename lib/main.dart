@@ -38,9 +38,6 @@ void main() async {
     sound: true,
   );
 
-  final fcmToken = await FirebaseMessaging.instance.getToken();
-  print('jeet:-$fcmToken');
-
   await flutterLocalNotificationsPlugin
       .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>()

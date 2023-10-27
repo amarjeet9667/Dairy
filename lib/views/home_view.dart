@@ -7,7 +7,6 @@ import 'package:diary/model/dairy_details_model.dart';
 import 'package:diary/views/dairy_view.dart';
 import 'package:diary/views/details.dart';
 import 'package:diary/views/notification_list_view.dart';
-import 'package:diary/views/notification_view.dart';
 import 'package:diary/widget/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -41,7 +40,7 @@ class _HomeViewState extends State<HomeView> {
               if (!snapshot.hasData) {
                 const CircularProgressIndicator();
               }
-              final user = snapshot.data;
+              final user = snapshot.data!;
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(

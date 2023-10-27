@@ -60,20 +60,15 @@ class DiaryController extends GetxController {
     String body = bodyController.text;
 
     final uid = firebaseAuth.currentUser!.uid;
-    final firebaseFirestore =
-        await firestore.collection('Users').where('uid', isEqualTo: uid).get();
-    if (firebaseFirestore.docs.isEmpty) {
-      await firestore.collection('Users').doc(uid).collection('Thoughts').add({
-        'userId': userId,
-        'title': title,
-        'body': body,
-        'timestamp': timestamp,
-      }).then((value) {
-        Get.offAll(const HomeView());
-      });
-    } else {
+
+    await firestore.collection('Users').doc(uid).collection('Thoughts').add({
+      'userId': userId,
+      'title': title,
+      'body': body,
+      'timestamp': timestamp,
+    }).then((value) {
       Get.offAll(const HomeView());
-    }
+    });
   }
 
   @override

@@ -36,7 +36,10 @@ class NotificationController extends GetxController {
         );
         recievedNotification.add(newNotification);
 
-        Get.to(NotificationView(message: body.value, notification: newNotification,));
+        Get.to(NotificationView(
+          message: body.value,
+          notification: newNotification,
+        ));
       }
     });
 
@@ -72,7 +75,10 @@ class NotificationController extends GetxController {
       );
       recievedNotification.add(newNotification);
 
-       Get.to(NotificationView(message: body.value, notification: newNotification,));
+      Get.to(NotificationView(
+        message: body.value,
+        notification: newNotification,
+      ));
     });
   }
 

@@ -1,6 +1,5 @@
 import 'package:diary/controllers/notification_controller.dart';
 import 'package:diary/helper/constants.dart';
-import 'package:diary/model/recieve_notification.dart';
 import 'package:diary/views/notification_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

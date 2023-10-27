@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diary/helper/constants.dart';
 import 'package:diary/views/home_view.dart';
@@ -39,6 +41,7 @@ class LoginController extends GetxController {
       await firebaseAuth.signInWithCredential(credential);
       if (firebaseAuth.currentUser == null) {
         Get.snackbar('Error', 'Unable to logIn');
+        log('Unable to login');
       } else {
         saveUser(
             name: account.displayName!,
@@ -68,6 +71,7 @@ class LoginController extends GetxController {
         'name': name,
         'email': email,
         'photo': photo,
+        'uid': uid,
         'login': FieldValue.serverTimestamp(),
         'fcmToken': fcmToken,
       }).then((_) {
