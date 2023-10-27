@@ -56,8 +56,8 @@ class _LoginViewState extends State<LoginView> {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25), color: black),
-                child: const Row(
-                  children: [
+                child: Row(
+                  children: const [
                     SizedBox(
                       height: 25,
                       width: 25,
