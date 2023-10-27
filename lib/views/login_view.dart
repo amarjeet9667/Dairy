@@ -85,6 +85,7 @@ class _LoginViewState extends State<LoginView> {
   }
 }
 
+// ............................App Bar............................
 class CustomAppBar extends StatelessWidget implements PreferredSize {
   const CustomAppBar({
     super.key,
